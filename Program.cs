@@ -91,23 +91,29 @@ namespace PortPing
 
         static private bool HostnameResolvable(string hostname)
         {
-            var status = false;
-            if (!IsIPv4Address(hostname))
+            if (IsIPv4Address(hostname))
+            {
+                return true;
+            }
+            else
             {
                 try
                 {
                     hostname = Dns.GetHostEntry(hostname).AddressList[0].ToString();
                     if (IsIPv4Address(hostname))
                     {
-                        status = true;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
                 catch
                 {
-                    return status;
+                    return false;
                 }
             }
-            return status;
         }
 
         static private bool CheckPort(string hostname, int port)
